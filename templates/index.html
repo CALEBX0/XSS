@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>XSS Playground</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-dark text-white">
+  <div class="container mt-5">
+    <h1 class="text-center">XSS Playground</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <form method="POST" class="p-4 bg-light text-dark rounded shadow">
+          <h4>Inyecta un mensaje</h4>
+          <div class="mb-3">
+            <input type="text" name="texto" class="form-control" placeholder="Texto que se guardará (XSS permitido)" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+
+        <hr>
+        <h5 class="text-warning">Mensajes almacenados (XSS persistente):</h5>
+        <ul>
+          {% for mensaje in mensajes %}
+            <li>{{ mensaje[0] | safe }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <div class="p-4 bg-secondary rounded shadow">
+          <h5 class="text-info">Entrada vía URL (?q=)</h5>
+          <p>{{ mensaje_url | safe }}</p>
+
+          <h5 class="text-info">Cookie reflejada</h5>
+          <p>{{ cookie_msg | safe }}</p>
+
+          <h5 class="text-info">User-Agent (cabecera)</h5>
+          <p>{{ user_agent | safe }}</p>
+
+          <hr>
+          <p><strong>Ruta dinámica vulnerable:</strong></p>
+          <p>Visita: <code>/perfil/&lt;tu_payload&gt;</code></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
